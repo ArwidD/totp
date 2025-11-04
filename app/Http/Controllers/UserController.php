@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Storage\UserRepository;
+use Illuminate\Database\UniqueConstraintViolationException;
+use App\Services\TotpQrService;
 
 
 class UserController extends Controller
@@ -21,11 +23,17 @@ class UserController extends Controller
     }
 
     public function register(Request $request)
-    {
+    { try {
         $user=User::factory()->make($request->request->all());
         
         $this->repo->add($user);
+
+        $qr = TotpQrService::generateQrCode($user);
+        return View::make('mail', ['qr' => $qr]);
+    } catch (UniqueConstraintViolationException $e) {
+        return View::make('register', ['message'=>'User email exists']);
     }
+}
 }
 
     
