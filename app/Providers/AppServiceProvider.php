@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Storage\UserRepository;
+use App\Storage\Implementations\DbUserRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(UserRepository::class, DbUserRepository::class);
     }
 }
