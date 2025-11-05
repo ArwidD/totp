@@ -111,5 +111,11 @@ $app->router->group([
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
+$app->router->group([
+    'prefix'=> 'api/v1',
+    'namespace'=>'App\Http\Controllers'
+], function($router) {
+    require __DIR__ . '/../routes/api_v1.php';
+});
 
 return $app;
